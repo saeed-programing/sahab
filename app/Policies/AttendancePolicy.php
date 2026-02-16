@@ -142,4 +142,15 @@ class AttendancePolicy
             'EducationOfficer',
         ]);
     }
+
+    public function attendancePreviousDay(User $user)
+    {
+        return $user->hasRole([
+            'super_admin',
+            'admin',
+            'dvisor',
+            'ExecutiveOfficer',
+            'EducationOfficer',
+        ]);
+    }
 }

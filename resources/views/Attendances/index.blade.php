@@ -162,19 +162,19 @@
                         .replace(':id', s.student.id);
 
             return `
-                                                                                                                                                                                    <tr>
-                                                                                                                                                                                        <td>${s.student.family}</td>
-                                                                                                                                                                                        <td>${s.student.name}</td>
-                                                                                                                                                                                        <td>${s.student.school_class.name}</td>
-                                                                                                                                                                                        <td>${s.student.national_code}</td>
-                                                                                                                                                                                        <td>
-                                                                                                                                                                                            <div class="d-flex justify-content-center">
-                                                                                                                                                                                                <a href="${url}" class="btn btn-sm btn-outline-info me-2">
-                                                                                                                                                                                                    ثبت وضعیت
-                                                                                                                                                                                                </a>
-                                                                                                                                                                                            </div>
-                                                                                                                                                                                        </td>
-                                                                                                                                                                                    </tr>`;
+                                                                                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                                                                                    <td>${s.student.family}</td>
+                                                                                                                                                                                                                                                                    <td>${s.student.name}</td>
+                                                                                                                                                                                                                                                                    <td>${s.student.school_class.name}</td>
+                                                                                                                                                                                                                                                                    <td>${s.student.national_code}</td>
+                                                                                                                                                                                                                                                                    <td>
+                                                                                                                                                                                                                                                                        <div class="d-flex justify-content-center">
+                                                                                                                                                                                                                                                                            <a href="${url}" class="btn btn-sm btn-outline-info me-2">
+                                                                                                                                                                                                                                                                                ثبت وضعیت
+                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                                                                                </tr>`;
         }).join('')}
     </tbody>
               </table>

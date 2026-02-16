@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Student;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -96,6 +97,13 @@ class AttendanceController extends Controller
     }
     public function registrationByNationalCode($day)
     {
+        $validator = Validator::make(['day' => $day], ['day' => 'required|date|exists:attendances,date'], ['day.exists' => 'روز انتخابی به عنوان روز درسی معرفی نشده است']);
+        if ($validator->fails())
+            return redirect()->route('attendances.index')->with('error', $validator->errors()->first());
+
+        if (!Carbon::parse($day, 'Asia/Tehran')->isSameDay(now('Asia/Tehran')))
+            Gate::authorize('attendancePreviousDay', User::class);
+
         $count = Attendance::where('date', $day)->where('status', 'unknown')->count();
         if ($count === 0)
             return redirect()->route('attendances.index')->with('success', "تمامی دانش آموزان در روز " . toJalali($day) . " حضور غیاب شده اند.");
@@ -118,6 +126,13 @@ class AttendanceController extends Controller
     }
     public function registrationByStudentCode($day)
     {
+        $validator = Validator::make(['day' => $day], ['day' => 'required|date|exists:attendances,date'], ['day.exists' => 'روز انتخابی به عنوان روز درسی معرفی نشده است']);
+        if ($validator->fails())
+            return redirect()->route('attendances.index')->with('error', $validator->errors()->first());
+
+        if (!Carbon::parse($day, 'Asia/Tehran')->isSameDay(now('Asia/Tehran')))
+            Gate::authorize('attendancePreviousDay', User::class);
+
         $count = Attendance::where('date', $day)->where('status', 'unknown')->count();
         if ($count === 0)
             return redirect()->route('attendances.index')->with('success', "تمامی دانش آموزان در روز " . toJalali($day) . " حضور غیاب شده اند.");
