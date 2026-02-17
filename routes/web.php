@@ -23,7 +23,10 @@ Route::middleware('throttle:10,1')->prefix('auth')->group(function () {
 
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'force.password.change'])->group(function () {
+    Route::view('/change-password', 'Auth.change-password')->name('changePassword');
+    Route::post('/change-password', [AuthController::class, 'changePassword'])->name('changePasswordPost');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

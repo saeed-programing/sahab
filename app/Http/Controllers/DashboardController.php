@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Models\Student;
 use App\Models\StudentProfile;
 use Morilog\Jalali\Jalalian;

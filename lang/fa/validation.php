@@ -177,5 +177,7 @@ return array(
         'date_of_birth' => 'تاریخ تولد',
         'previous_school' => 'مدرسه قبلی',
         'father_name' => 'نام پدر',
+        'previous_password' => 'رمز عبور قبلی',
+        'new_password' => 'رمز عبور جدید',
     ),
 );

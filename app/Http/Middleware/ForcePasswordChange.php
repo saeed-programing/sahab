@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+
+class ForcePasswordChange
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (Auth::check() && Auth::user()->unsafe_password && !Auth::user()->hasRole['AttendanceOfficer']) {
+            if (!$request->routeIs('changePassword*')) {
+                return redirect()->route('changePassword')->with('error', 'برای ادامه، ابتدا باید رمزعبور خود را عوض کنید');
+            }
+        }
+
+        return $next($request);
+    }
+}

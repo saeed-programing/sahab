@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +19,25 @@ class AuthController extends Controller
 
         return view('Auth.login');
     }
+
+    private function isUnsafePassword($password, $username)
+    {
+        $password = strtolower($password);
+        $username = strtolower($username);
+
+        if ($password === $username) {
+            return true;
+        }
+
+        if (str_contains($password, $username)) {
+            return true;
+        }
+
+        similar_text($password, $username, $percent);
+
+        return $percent > 70;
+    }
+
     public function loginPost(Request $request)
     {
         $credentials = $request->validate([
@@ -29,6 +47,17 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            $plainPass = $request->password;
+            $username = $user->username;
+
+
+            if ($this->isUnsafePassword($plainPass, $username)) {
+                $user->update(['unsafe_password' => true]);
+                return redirect()->route('changePassword')->with('warning', 'رمز عبور شما نا امن است؛ باید تغییر کند');
+            }
             return redirect()->route('dashboard')->with('succes', "خوش آمدید");
         } else {
             return redirect()->back()->with('error', 'کاربری با این مشخصات وجود ندارد')->withInput();
@@ -79,7 +108,6 @@ class AuthController extends Controller
             return redirect()->route('forgetPassword')->with('error', 'خطا. دوباره سعی کنید');
     }
 
-
     public function resetPassword($token)
     {
         return view('Auth.reset-password', compact('token'));
@@ -104,5 +132,34 @@ class AuthController extends Controller
         $password_reset = DB::table('password_reset_tokens')->where('token', $request->token)->delete();
 
         return redirect()->route('login')->with('success', 'کلمه عبور با موفقیت تغییر کرد');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'previous_password' => 'required',
+            'new_password' => 'required|min:5|confirmed'
+        ], []);
+
+        $user = Auth::user();
+        if (!Hash::check($request->previous_password, $user->password)) {
+            return redirect()->back()->withErrors([
+                'previous_password' => 'کلمه عبور قبلی صحیح نیست'
+            ]);
+        }
+
+        if ($this->isUnsafePassword($request->new_password, $user->username)) {
+            return redirect()->back()->withErrors([
+                'new_password' => 'کلمه عبور جدید امن نیست. رمز دیگری را امتحان کنید'
+            ]);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+            'unsafe_password' => false,
+        ]);
+        Auth::logout();
+        return redirect()->route('login')->with('success', 'کلمه عبور با موفقیت تغییر کرد. دوباره وارد شوید');
+
     }
 }

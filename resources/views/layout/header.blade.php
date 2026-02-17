@@ -228,12 +228,13 @@
                     {{ auth()->user()->name }}
                 </span>
 
-                {{-- <!-- تغییر رمز -->
-                <a href="#" class="text-white fs-5 custom-tooltip" data-tooltip="تغییر کلمه عبور">
+                <!-- تغییر رمز -->
+                <a href="{{ route('changePassword') }}" class="text-white fs-5 custom-tooltip"
+                    data-tooltip="تغییر کلمه عبور">
                     <i class="bi bi-key-fill"></i>
                 </a>
 
-                <!-- ویرایش پروفایل -->
+                {{-- <!-- ویرایش پروفایل -->
                 <a href="#" class="text-white fs-5 custom-tooltip" data-tooltip="ویرایش پروفایل">
                     <i class="bi bi-pencil-square"></i>
                 </a> --}}
