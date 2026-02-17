@@ -69,4 +69,15 @@ class UserPolicy
     {
         return false;
     }
+
+    public function changePassword(User $user)
+    {
+        return $user->hasRole([
+            'super_admin',
+            'admin',
+            'dvisor',
+            'ExecutiveOfficer',
+            'EducationOfficer'
+        ]);
+    }
 }

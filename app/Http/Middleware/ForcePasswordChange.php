@@ -16,7 +16,7 @@ class ForcePasswordChange
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->unsafe_password && !Auth::user()->hasRole['AttendanceOfficer']) {
+        if (Auth::check() && Auth::user()->unsafe_password && !Auth::user()->hasRole('AttendanceOfficer')) {
             if (!$request->routeIs('changePassword*')) {
                 return redirect()->route('changePassword')->with('error', 'برای ادامه، ابتدا باید رمزعبور خود را عوض کنید');
             }

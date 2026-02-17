@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -54,10 +55,11 @@ class AuthController extends Controller
             $username = $user->username;
 
 
-            if ($this->isUnsafePassword($plainPass, $username)) {
+            if (!Auth::user()->hasRole('AttendanceOfficer') && $this->isUnsafePassword($plainPass, $username)) {
                 $user->update(['unsafe_password' => true]);
                 return redirect()->route('changePassword')->with('warning', 'رمز عبور شما نا امن است؛ باید تغییر کند');
             }
+
             return redirect()->route('dashboard')->with('succes', "خوش آمدید");
         } else {
             return redirect()->back()->with('error', 'کاربری با این مشخصات وجود ندارد')->withInput();
@@ -136,6 +138,8 @@ class AuthController extends Controller
 
     public function changePassword(Request $request)
     {
+        Gate::authorize('changePassword', Auth::user());
+
         $request->validate([
             'previous_password' => 'required',
             'new_password' => 'required|min:5|confirmed'
@@ -148,7 +152,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if ($this->isUnsafePassword($request->new_password, $user->username)) {
+        if (!Auth::user()->hasRole('AttendanceOfficer') && $this->isUnsafePassword($request->new_password, $user->username)) {
             return redirect()->back()->withErrors([
                 'new_password' => 'کلمه عبور جدید امن نیست. رمز دیگری را امتحان کنید'
             ]);
