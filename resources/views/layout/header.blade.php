@@ -48,7 +48,7 @@
                     </ul>
                 </div>
 
-                <span class="nav-link text-white">{{ auth()->user()->name }}</span>
+                <span class="nav-link text-white">{{ Auth::user()->name }}</span>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
                     <button type="submit" class="nav-link text-white px-3">خروج</button>
@@ -76,7 +76,7 @@
                     <i class="bi bi-person-circle"></i>
 
 
-                    <span class="nav-link text-white">{{ auth()->user()->name }}</span>
+                    <span class="nav-link text-white">{{ Auth::user()->name }}</span>
 
 
                     <div class="dropdown">
@@ -162,7 +162,7 @@
                         </ul>
                     </div>
 
-                    <span class="nav-link text-white me-2">{{ auth()->user()->name }}</span>
+                    <span class="nav-link text-white me-2">{{ Auth::user()->name }}</span>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@
 
                 <!-- نام کاربر -->
                 <span class="text-white fw-bold">
-                    {{ auth()->user()->name }}
+                    {{ Auth::user()->name }}
                 </span>
 
                 <!-- تغییر رمز -->
@@ -225,7 +225,7 @@
 
                 <!-- نام کاربر -->
                 <span class="text-white fw-bold">
-                    {{ auth()->user()->name }}
+                    {{ Auth::user()->name }}
                 </span>
 
                 <!-- تغییر رمز -->

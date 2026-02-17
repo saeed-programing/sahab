@@ -6,7 +6,7 @@
         <h4 class="fw-bold">پنل ادمین - دبیرستان سحاب رحمت</h4>
     </div>
 
-    @if (auth()->user()->hasRole('AttendanceOfficer'))
+    @if (Auth::user()->hasRole('AttendanceOfficer'))
         <div class="row">
             <div class="col-12 text-center">
                 <a href="{{ route('attendances.index') }}" class="alert alert-primary d-inline-block">

@@ -36,7 +36,7 @@
                                 <a href="{{ route('employees.edit', $user->id) }}" class="btn btn-sm btn-outline-info me-2">
                                     ویرایش
                                 </a>
-                                @if ($user->id == auth()->user()->id)
+                                @if ($user->id == Auth::user()->id)
                                     <button class="btn btn-sm btn-danger" disabled>حذف</button>
                                 @else
                                     <form action="{{ route('employees.destroy', $user->id) }}" data-confirm="delete"

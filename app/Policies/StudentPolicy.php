@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Student;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class StudentPolicy
 {
@@ -74,7 +74,7 @@ class StudentPolicy
      */
     public function delete(): bool
     {
-        return auth()->user()->hasRole([
+        return Auth::user()->hasRole([
             'super_admin',
             'admin',
         ]);

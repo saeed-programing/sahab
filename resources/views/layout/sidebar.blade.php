@@ -126,7 +126,7 @@
             </div>
         </div>
         @foreach ($menuGroups as $group)
-            @if (isset($group['can']) && !auth()->user()->can($group['can'], $group['model']))
+            @if (isset($group['can']) && !Auth::user()->can($group['can'], $group['model']))
                 @continue
             @endif
 
@@ -148,7 +148,7 @@
 
                     <div class="accordion-body">
                         @foreach ($group['links'] as $item)
-                            @if (isset($item['can']) && !auth()->user()->can($item['can'], $item['model']))
+                            @if (isset($item['can']) && !Auth::user()->can($item['can'], $item['model']))
                                 @continue
                             @endif
 

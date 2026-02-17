@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\StudentViolation;
 use App\Models\ViolationTitle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Throwable;
 
@@ -66,7 +67,7 @@ class StudentViolationController extends Controller
                 'date' => toGregorian($request->date),
                 'case_id' => $request->case_id,
                 'description' => $request->description,
-                'registered_by' => auth()->user()->id
+                'registered_by' => Auth::user()->id
             ]);
             return redirect()->route('student-violations.index')->with('success', "ثبت با موفقیت انجام شد");
         } catch (Throwable $e) {
@@ -116,7 +117,7 @@ class StudentViolationController extends Controller
                 'date' => toGregorian($request->date),
                 'case_id' => $request->case_id,
                 'description' => $request->description,
-                'registered_by' => auth()->user()->id
+                'registered_by' => Auth::user()->id
             ]);
             return redirect()->back()->with('success', "ویرایش با موفقیت انجام شد");
         } catch (Throwable $e) {

@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\SchoolClass;
-use App\Observers\SchoolClassObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

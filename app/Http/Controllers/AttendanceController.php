@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -72,7 +73,7 @@ class AttendanceController extends Controller
                 'student_id' => $student->id,
                 'date' => $day,
                 'status' => 'unknown',
-                'registered_by' => auth()->user()->id
+                'registered_by' => Auth::user()->id
             ]);
         }
 
@@ -173,7 +174,7 @@ class AttendanceController extends Controller
                 'delay' => $request->delay,
                 'is_excused' => $request->is_excused == 'true' ? true : false,
                 'status' => 'late',
-                'registered_by' => auth()->user()->id
+                'registered_by' => Auth::user()->id
             ]);
 
             if (!$registration)
@@ -200,7 +201,7 @@ class AttendanceController extends Controller
                 'is_excused' => $request->is_excused == 'true' ? true : false,
                 'status' => 'late',
                 'description' => $request->description,
-                'registered_by' => auth()->user()->id
+                'registered_by' => Auth::user()->id
             ]);
 
             if (!$registration)
@@ -222,7 +223,7 @@ class AttendanceController extends Controller
 
             $registration = Attendance::where('student_id', $request->student_id)->where('date', $request->date)->update([
                 'status' => 'present',
-                'registered_by' => auth()->user()->id
+                'registered_by' => Auth::user()->id
             ]);
 
             if (!$registration)
@@ -337,7 +338,7 @@ class AttendanceController extends Controller
                     'delay' => $request->delay,
                     'is_excused' => $request->is_excused,
                     'description' => $request->description,
-                    'registered_by' => auth()->user()->id,
+                    'registered_by' => Auth::user()->id,
                 ]);
                 return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
             } catch (Throwable $e) {
@@ -364,7 +365,7 @@ class AttendanceController extends Controller
                     'status' => $request->status,
                     'is_excused' => $request->is_excused,
                     'description' => $request->description,
-                    'registered_by' => auth()->user()->id,
+                    'registered_by' => Auth::user()->id,
                 ]);
                 return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
             } catch (Throwable $e) {
@@ -375,7 +376,7 @@ class AttendanceController extends Controller
             try {
                 Attendance::where('id', $request->attendance_id)->update([
                     'status' => $request->status,
-                    'registered_by' => auth()->user()->id,
+                    'registered_by' => Auth::user()->id,
                 ]);
                 return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
             } catch (Throwable $e) {
@@ -386,7 +387,7 @@ class AttendanceController extends Controller
             try {
                 Attendance::where('id', $request->attendance_id)->update([
                     'status' => $request->status,
-                    'registered_by' => auth()->user()->id,
+                    'registered_by' => Auth::user()->id,
                 ]);
                 return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
             } catch (Throwable $e) {
