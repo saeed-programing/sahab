@@ -26,7 +26,7 @@ class StudentController extends Controller
     {
         Gate::authorize('viewAny', Student::class);
 
-        $students = Student::all();
+        $students = Student::orderBy('family')->get();
         return view('Students.index', compact('students'));
     }
 

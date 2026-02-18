@@ -12,6 +12,7 @@ class DashboardController extends Controller
     {
         // Births Of The Month
         $studentsThisMonth = StudentProfile::with('student')
+            ->orderBy('date_of_birth')
             ->get()
             ->filter(function ($student) {
                 if (empty($student->date_of_birth))
