@@ -108,4 +108,13 @@ class StudentPolicy
             'EducationOfficer',
         ]);
     }
+    public function showUnknownClassAlert(User $user): bool
+    {
+        return $user->hasRole([
+            'super_admin',
+            'admin',
+            'ExecutiveOfficer',
+            'EducationOfficer',
+        ]);
+    }
 }

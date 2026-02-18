@@ -87,18 +87,34 @@
             </div>
 
             <div class="col-md-12 col-lg-6 mt-3 mt-lg-0">
-                @if ($unknownStudents->isNotEmpty())
+                @if ($unknownAttendance->isNotEmpty())
                     <div class="alert alert-warning me-2">
-                        <h5>در انتظار کلاس بندی</h5>
+                        <h5>در انتظار تعیین وضعیت حضور (کلاس شما)</h5>
                         <ul>
-                            @foreach ($unknownStudents as $student)
+                            @foreach ($unknownAttendance as $attendance)
                                 <li><a
-                                        href="{{ route('students.edit', $student->id) }}">{{ $student->name . ' ' . $student->family }}</a>
+                                        href="{{ route('editAttendance', ['date' => $attendance->date, 'student_id' => $attendance->student->id]) }}">
+                                        {{ $attendance->student->family . ' - ' . $attendance->student->name . ' || ' . toJalali($attendance->date) }}
+                                    </a>
                                 </li>
                             @endforeach
                         </ul>
                     </div>
                 @endif
+                @can('showUnknownClassAlert', Auth::user())
+                    @if ($unknownClass->isNotEmpty())
+                        <div class="alert alert-warning me-2">
+                            <h5>در انتظار کلاس بندی</h5>
+                            <ul>
+                                @foreach ($unknownClass as $student)
+                                    <li><a
+                                            href="{{ route('students.edit', $student->id) }}">{{ $student->name . ' ' . $student->family }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                @endcan
                 @if ($studentsThisMonth->isNotEmpty())
                     <div class="alert alert-primary">
                         <h5>متولدین این ماه</h5>
