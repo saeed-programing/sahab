@@ -112,6 +112,9 @@
         const nationalInput = document.getElementById('national_id');
         const descriptionInput = document.getElementById('description');
 
+        const startTime = "8:35";
+        const arrivalTime = getCurrentTime();
+
         // فوکوس خودکار روی اینپوت کدملی
         window.addEventListener('load', () => nationalInput.focus());
 
@@ -245,8 +248,6 @@
                         currentUser = result.user;
 
                         // محاسبه تاخیر
-                        const startTime = "7:20";
-                        const arrivalTime = getCurrentTime();
                         delayMinutes = calculateDelay(startTime, arrivalTime);
 
                         // ساخت بخش تاخیر

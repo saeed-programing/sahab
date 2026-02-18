@@ -85,6 +85,10 @@
         const studentCodeInput = document.getElementById('student_code');
         const descriptionInput = document.getElementById('description');
 
+        const startTime = "8:35";
+        const arrivalTime = getCurrentTime();
+
+
         // فوکوس خودکار روی اینپوت کد دانش آموزی
         window.addEventListener('load', () => studentCodeInput.focus());
 
@@ -158,8 +162,6 @@
                         currentUser = result.user;
 
                         // محاسبه تاخیر
-                        const startTime = "7:20";
-                        const arrivalTime = getCurrentTime();
                         delayMinutes = calculateDelay(startTime, arrivalTime);
 
                         // ساخت بخش تاخیر
