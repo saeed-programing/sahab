@@ -14,15 +14,24 @@ class DashboardController extends Controller
     {
         // Births Of The Month
         $studentsThisMonth = StudentProfile::with('student')
-            ->orderBy('date_of_birth')
             ->get()
-            ->filter(function ($student) {
-                if (empty($student->date_of_birth))
-                    return false;
+            ->map(function ($student) {
+                if (empty($student->date_of_birth)) {
+                    return null;
+                }
 
                 $jalali = Jalalian::fromDateTime($student->date_of_birth);
-                return $jalali->getMonth() === Jalalian::now()->getMonth();
-            });
+
+                $student->jalali_month = $jalali->getMonth();
+                $student->jalali_day = $jalali->getDay();
+
+                return $student;
+            })
+            ->filter(function ($student) {
+                return $student && $student->jalali_month === Jalalian::now()->getMonth();
+            })
+            ->sortBy('jalali_day')
+            ->values();
         // Students Of unknown Class
         $unknownClass = Student::where('class_id', null)->get();
 
@@ -30,6 +39,7 @@ class DashboardController extends Controller
         $unknownAttendance = Attendance::with('student.schoolClass.teacher')
             ->where('status', 'unknown')
             ->whereRelation('student.schoolClass.teacher', 'id', Auth::user()->id)
+            ->orderByDesc('date')
             ->get();
 
         return view('dashboard', compact('studentsThisMonth', 'unknownClass', 'unknownAttendance'));
