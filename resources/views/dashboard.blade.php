@@ -93,7 +93,7 @@
                         <ul>
                             @foreach ($unknownAttendance as $attendance)
                                 <li><a
-                                        href="{{ route('editAttendance', ['date' => $attendance->date, 'student_id' => $attendance->student->id]) }}">
+                                        href="{{ route('editAttendance', ['date' => $attendance->date, 'student_id' => $attendance->student->id]) }}?return_url={{ url()->current() }}">
                                         {{ $attendance->student->family . ' - ' . $attendance->student->name . ' || ' . toJalali($attendance->date) }}
                                     </a>
                                 </li>

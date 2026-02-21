@@ -112,7 +112,7 @@
             const modalBody = document.getElementById('unknownStudentsBody');
             const modalTitle = document.getElementById('unknownStudentsLabel');
             const editAttendanceBaseUrl =
-                "{{ route('editAttendance', ['date' => ':date', 'student_id' => ':id']) }}";
+                "{{ route('editAttendance', ['date' => ':date', 'student_id' => ':id']) }}?return_url={{ url()->current() }}";
 
 
             document.querySelectorAll('.btn-show-unknown').forEach(button => {
@@ -162,19 +162,19 @@
                         .replace(':id', s.student.id);
 
             return `
-                                                                                                                                                                                                                                                                <tr>
-                                                                                                                                                                                                                                                                    <td>${s.student.family}</td>
-                                                                                                                                                                                                                                                                    <td>${s.student.name}</td>
-                                                                                                                                                                                                                                                                    <td>${s.student.school_class.name}</td>
-                                                                                                                                                                                                                                                                    <td>${s.student.national_code}</td>
-                                                                                                                                                                                                                                                                    <td>
-                                                                                                                                                                                                                                                                        <div class="d-flex justify-content-center">
-                                                                                                                                                                                                                                                                            <a href="${url}" class="btn btn-sm btn-outline-info me-2">
-                                                                                                                                                                                                                                                                                ثبت وضعیت
-                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                    </td>
-                                                                                                                                                                                                                                                                </tr>`;
+                                            <tr>
+                                                <td>${s.student.family}</td>
+                                                <td>${s.student.name}</td>
+                                                <td>${s.student?.school_class?.name ?? '-'}</td>
+                                                <td>${s.student.national_code}</td>
+                                                <td>
+                                                <div class="d-flex justify-content-center">
+                                                <a href="${url}" class="btn btn-sm btn-outline-info me-2">
+                                                ثبت وضعیت
+                                                </a>
+                                                </div>
+                                                </td>
+                                                </tr>`;
         }).join('')}
     </tbody>
               </table>

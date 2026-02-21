@@ -296,6 +296,8 @@ class AttendanceController extends Controller
     {
         Gate::authorize('editAttendance', Attendance::class);
 
+        $returnUrl = $request->return_url;
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -313,6 +315,8 @@ class AttendanceController extends Controller
 
         if ($validator->fails())
             return redirect()->back()->with('error', $validator->errors()->first());
+
+        $attendance = Attendance::findOrFail($request->attendance_id);
 
         if ($request->status == 'late') {
             $request->validate(
@@ -333,14 +337,15 @@ class AttendanceController extends Controller
             );
 
             try {
-                Attendance::where('id', $request->attendance_id)->update([
+                $attendance->update([
                     'status' => $request->status,
                     'delay' => $request->delay,
                     'is_excused' => $request->is_excused,
                     'description' => $request->description,
                     'registered_by' => Auth::user()->id,
                 ]);
-                return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
+                return $returnUrl ? redirect($returnUrl)->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد')
+                    : redirect()->route('dashboard')->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد');
             } catch (Throwable $e) {
                 return redirect()->back()->with('error', $e->getMessage());
             }
@@ -361,35 +366,39 @@ class AttendanceController extends Controller
             );
 
             try {
-                Attendance::where('id', $request->attendance_id)->update([
+                $attendance->update([
                     'status' => $request->status,
                     'is_excused' => $request->is_excused,
                     'description' => $request->description,
                     'registered_by' => Auth::user()->id,
                 ]);
-                return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
+                return $returnUrl ? redirect($returnUrl)->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد')
+                    : redirect()->route('dashboard')->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد');
             } catch (Throwable $e) {
                 return redirect()->back()->with('error', $e->getMessage());
             }
         }
         if ($request->status == 'present') {
             try {
-                Attendance::where('id', $request->attendance_id)->update([
+                $attendance->update([
                     'status' => $request->status,
                     'registered_by' => Auth::user()->id,
                 ]);
-                return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
+                return $returnUrl ? redirect($returnUrl)->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد')
+                    : redirect()->route('dashboard')->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد');
             } catch (Throwable $e) {
                 return redirect()->back()->with('error', $e->getMessage());
             }
         }
         if ($request->status == 'unknown') {
             try {
-                Attendance::where('id', $request->attendance_id)->update([
+                $attendance->update([
                     'status' => $request->status,
                     'registered_by' => Auth::user()->id,
                 ]);
-                return redirect()->back()->with('success', 'تغییرات با موفقیت اعمال شد');
+
+                return $returnUrl ? redirect($returnUrl)->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد')
+                    : redirect()->route('dashboard')->with('success', 'وضعیت حضور ' . $attendance->student->family . ' در تاریخ ' . toJalali($attendance->date) . ' با موفقیت تغییر کرد');
             } catch (Throwable $e) {
                 return redirect()->back()->with('error', $e->getMessage());
             }

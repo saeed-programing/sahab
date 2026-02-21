@@ -11,6 +11,7 @@
         <form action="{{ route('editAttendance.post') }}" method="post" data-confirm="edit">
             @csrf
             <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
+            <input type="hidden" name="return_url" value="{{ request('return_url') }}">
             <div class="row">
                 <div class="col-md-2 mb-2">
                     <label class="form-label">تاریخ</label>
@@ -23,7 +24,7 @@
                 </div>
                 <div class="col-md-3 mb-2">
                     <label class="form-label">کلاس</label>
-                    <input class="form-control" value="{{ $attendance->student->schoolClass->name }}" disabled />
+                    <input class="form-control" value="{{ $attendance->student->schoolClass->name ?? '-' }}" disabled />
                 </div>
                 <div class="col-md-3 mb-2">
                     <label class="form-label">ثبت کننده</label>
