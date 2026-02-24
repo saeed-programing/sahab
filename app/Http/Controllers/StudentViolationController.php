@@ -24,9 +24,14 @@ class StudentViolationController extends Controller
             ->groupBy('case_id')
             ->selectRaw('count(*) as total, case_id')
             ->get();
-        $violations = StudentViolation::with('case')->get();
 
-        return view('Violations.index', compact('violations_count', 'violations'));
+        $total_count = StudentViolation::count();
+        $violations = StudentViolation::with('case')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return view('Violations.index', compact('violations_count', 'violations', 'total_count'));
     }
 
     /**

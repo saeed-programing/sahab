@@ -41,7 +41,7 @@
     </div>
 
 
-    <h5 class="fw-bold mt-4">ده مورد اخیر</h5>
+    <h5 class="fw-bold mt-4">تخلفات ثبت شده</h5>
 
     {{-- Desktop table --}}
     <div class="table-responsive d-none d-md-block">
@@ -62,7 +62,7 @@
             <tbody>
                 @foreach ($violations as $violation)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $total_count-- }}</td>
                         <th>{{ $violation->student->family }}</th>
                         <th>{{ $violation->student->name }}</th>
                         <th>{{ $violation->student->schoolClass->name ?? 'در انتظار کلاس بندی' }}</th>
