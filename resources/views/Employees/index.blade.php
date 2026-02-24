@@ -1,20 +1,19 @@
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('title', 'Employees Management')
 
-@section('body')
+@section('content')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h4 class="fw-bold">مدیریت کارمندان</h4>
         <a href="{{ route('employees.create') }}" type="button" class="btn btn-sm btn-outline-primary">
             ایجاد کاربر جدید</a>
     </div>
 
-
     <div class="table-responsive">
-        <table class="table text-center align-middle">
+        <table class="table table-striped text-center align-middle">
             <thead>
                 <tr>
-                    <th>ردیف</th>
+                    <th>#</th>
                     <th>نام و نام خانوادگی</th>
                     <th>نقش ها</th>
                     <th>شماره موبایل</th>
@@ -26,14 +25,14 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <th>{{ $user->name }}</th>
+                        <td>{{ $user->name }}</td>
 
-                        <th>{{ $user->roles->pluck('role_label')->implode(' | ') }}</th>
-                        <th>{{ $user->mobile }}</th>
-                        <th>{{ $user->email }}</th>
+                        <td>{{ $user->roles->pluck('role_label')->implode(' | ') }}</td>
+                        <td>{{ $user->mobile }}</td>
+                        <td>{{ $user->email }}</td>
                         <td>
-                            <div class="d-flex">
-                                <a href="{{ route('employees.edit', $user->id) }}" class="btn btn-sm btn-outline-info me-2">
+                            <div class="d-flex flex-column flex-md-row gap-1 justify-content-center">
+                                <a href="{{ route('employees.edit', $user->id) }}" class="btn btn-sm btn-outline-info">
                                     ویرایش
                                 </a>
                                 @if ($user->id == Auth::user()->id)

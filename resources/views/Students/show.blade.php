@@ -1,62 +1,39 @@
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('title', 'Show Student')
 
-@section('link')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
-
-
+@push('links')
     <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+@endpush
 
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-    <!-- Buttons -->
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
-    <!-- Export libs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
-    {{-- PDF Export --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <!-- Excel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-@endsection
-
-
-@section('body')
-    <div style="margin-right: 150px">
+@section('content')
+    <div class="container-fluid px-2 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h4 class="fw-bold">دانش آموز: {{ $student->name . ' ' . $student->family }}</h4>
         </div>
 
         <div class="card shadow-sm">
             <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs" id="studentTabs" role="tablist">
+                <ul class="nav nav-tabs card-header-tabs flex-nowrap overflow-auto" id="studentTabs" role="tablist">
                     <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#base-info">اطلاعات
+                        <button class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="base-info"
+                            data-bs-target="#base-info">اطلاعات
                             اولیه</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contact-info">اطلاعات
+                        <button class="nav-link" role="tab" aria-controls="contact-info" data-bs-toggle="tab"
+                            data-bs-target="#contact-info">اطلاعات
                             ارتباطی</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#other-info">سایر اطلاعات</button>
+                        <button class="nav-link" role="tab" aria-controls="other-info" data-bs-toggle="tab"
+                            data-bs-target="#other-info">سایر اطلاعات</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#overview">نمای کلی</button>
+                        <button class="nav-link" role="tab" aria-controls="overview" data-bs-toggle="tab"
+                            data-bs-target="#overview">نمای کلی</button>
                     </li>
                 </ul>
             </div>
@@ -65,36 +42,36 @@
 
                 <!-- اطلاعات اولیه -->
                 <div class="tab-pane fade show active" id="base-info">
-                    <div class="row g-3">
-                        <div class="col-md-3 text-center">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-12 col-md-3 text-center">
                             <img src="{{ $student->image == 'default.png' ? asset('images/default.png') : asset('images/students/' . $student->image) }}"
                                 width="150" class="img-thumbnail mb-2" alt="student">
                         </div>
 
-                        <div class="col-md-9">
+                        <div class="col-12 col-md-9">
                             <div class="row g-3">
-                                <div class="col-md-4">
+                                <div class="col-12 col-md-4">
                                     <label class="form-label">نام</label>
                                     <input disabled class="form-control" value="{{ $student->name }}">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-12 col-md-4">
                                     <label class="form-label">نام خانوادگی</label>
                                     <input disabled class="form-control" value="{{ $student->family }}">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-12 col-md-4">
                                     <label class="form-label">کد ملی</label>
                                     <input disabled class="form-control" value="{{ $student->national_code }}">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-12 col-md-4">
                                     <label class="form-label">کد دانش‌آموزی</label>
                                     <input disabled class="form-control" value="{{ $student->student_code }}">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-12 col-md-4">
                                     <label class="form-label">کلاس</label>
                                     <input disabled class="form-control"
                                         value="{{ $student->schoolClass->name ?? 'درانتظار کلاس بندی' }}">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-12 col-md-4">
                                     <label class="form-label">استاد راهنما</label>
                                     <input disabled class="form-control"
                                         value="{{ $student->schoolClass->teacher->name ?? '-' }}">
@@ -142,7 +119,6 @@
                     @endif
                 </div>
 
-
                 <!-- سایر اطلاعات -->
                 <div class="tab-pane fade" id="other-info">
                     @if ($profile == null)
@@ -151,15 +127,15 @@
                         </div>
                     @else
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <label class="form-label">نام پدر</label>
                                 <input disabled class="form-control" value="{{ $profile->father_name }}">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <label class="form-label">مدرسه قبلی</label>
                                 <input disabled class="form-control" value="{{ $profile->previous_school }}">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-12 col-md-4">
                                 <label class="form-label">تاریخ تولد</label>
                                 <input disabled class="form-control" value="{{ toJalali($profile->date_of_birth) }}">
                             </div>
@@ -170,13 +146,49 @@
 
                 <!-- نمای کلی -->
                 <div class="tab-pane fade" id="overview">
-                    <div class="d-flex justify-content-end gap-2 mb-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-end gap-2 mb-3">
                         <button disabled id="excelBtn" class="btn btn-success btn-sm">خروجی Excel</button>
                         <button id="pdfBtn" class="btn btn-danger btn-sm">خروجی PDF</button>
                         <button disabled id="printBtn" class="btn btn-secondary btn-sm">چاپ</button>
                     </div>
                     <div id="exportArea">
-                        <h5 class="fw-bold ">{{ $student->family . ' - ' . $student->name }}</h5>
+                        <div class="row g-3 align-items-center my-3">
+                            <div class="col-12 col-md-3 text-center">
+                                <img src="{{ $student->image == 'default.png' ? asset('images/default.png') : asset('images/students/' . $student->image) }}"
+                                    width="150" class="img-thumbnail mb-2" alt="student">
+                            </div>
+
+                            <div class="col-12 col-md-9">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">نام</label>
+                                        <input disabled class="form-control" value="{{ $student->name }}">
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">نام خانوادگی</label>
+                                        <input disabled class="form-control" value="{{ $student->family }}">
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">کد ملی</label>
+                                        <input disabled class="form-control" value="{{ $student->national_code }}">
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">کد دانش‌آموزی</label>
+                                        <input disabled class="form-control" value="{{ $student->student_code }}">
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">کلاس</label>
+                                        <input disabled class="form-control"
+                                            value="{{ $student->schoolClass->name ?? 'درانتظار کلاس بندی' }}">
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">استاد راهنما</label>
+                                        <input disabled class="form-control"
+                                            value="{{ $student->schoolClass->teacher->name ?? '-' }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="table-light">
@@ -288,18 +300,37 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
 
-@section('script')
+@push('scripts')
+    <!-- DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Buttons -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <!-- Export libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    {{-- PDF Export --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     {{-- PDF Export --}}
     <script>
         document.getElementById('pdfBtn').addEventListener('click', function() {
-
             html2pdf().set({
                 margin: 0.5,
                 filename: '{{ $student->name . '-' . $student->family }}.pdf',
@@ -360,4 +391,4 @@
             win.close();
         });
     </script>
-@endsection
+@endpush

@@ -15,35 +15,37 @@
 </head>
 
 <body>
-    <div class="row mt-5 justify-content-center align-items-center">
-        <div class="col-4">
-            <div class="card">
-                <h5 class="card-header">فراموشی رمز عبور</h5>
-                <div class="card-body">
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-                    @if (session()->has('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-                    <form action="{{ route('forgetPassword.post') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">ایمیل:</label>
-                            <input autocomplete="off" name="email" value="{{ old('email') }}" class="form-control">
-                            <div class="form-text text-danger">
-                                @error('email')
-                                    {{ $message }}
-                                @enderror
+    <div class="container">
+        <div class="row min-vh-100 justify-content-center align-items-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-4">
+                <div class="card shadow-sm">
+                    <h5 class="card-header text-center">فراموشی رمز عبور</h5>
+                    <div class="card-body">
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+                        @if (session()->has('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                        <form action="{{ route('forgetPassword.post') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label">ایمیل:</label>
+                                <input autocomplete="off" name="email" value="{{ old('email') }}"
+                                    class="form-control">
+                                <div class="form-text text-danger">
+                                    @error('email')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="btn btn-secondary">ارسال لینک به ایمیل</button>
-                    </form>
+                            <button type="submit" class="btn btn-secondary">ارسال لینک به ایمیل</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

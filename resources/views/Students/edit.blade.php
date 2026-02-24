@@ -1,40 +1,40 @@
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('title', 'Edit Student')
 
-@section('link')
+@push('links')
     <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
-@endsection
+@endpush
 
-
-@section('body')
+@section('content')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h4 class="fw-bold">ویرایش اطلاعات دانش اموز</h4>
     </div>
-    <div>
+
+    <div class="container-fluid p-0">
         <form action="{{ route('students.update', $student->id) }}" data-confirm="edit" data-confirm-item="اطلاعات دانش آموز"
             method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="alert alert-info text-center col-9" role="alert">
+            <div class="alert alert-info text-center col-12 col-lg-9 mx-auto" role="alert">
                 اطلاعات اولیه (ضروری)
             </div>
 
             {{-- Image --}}
             <div id="drapContainer"
-                class="d-flex mx-auto gap-5 justify-content-center align-items-center drop-image-container">
+                class="d-flex flex-column flex-md-row mx-auto gap-3 gap-md-5 justify-content-center align-items-center drop-image-container">
                 <div class="crop-box">
                     <img id="imagePreview" class="imagePreview">
                 </div>
                 <button type="button" class="btn btn-outline-danger" id="cropButton">برش</button>
             </div>
 
-            <div class="row d-flex">
-                <div class="col-3 ">
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 col-lg-3">
                     <label for="image" class="form-label">تصویر دانش آموز:</label>
                     <input class="form-control" type="file" id="image" name="image" accept="image/*">
-                    <img id="croppedPreview" class="croppedPreview border border-primary"
+                    <img id="croppedPreview" class="croppedPreview border border-primary w-100 mt-2"
                         src="{{ old('cropped_image', $student->image == 'default.png' ? asset('images/default.png') : asset('images/students/' . $student->image)) }}">
                     <input value="{{ old('cropped_image') }}" type="hidden" name="cropped_image" id="croppedImageInput">
                 </div>
@@ -47,9 +47,9 @@
             </div>
 
             {{-- Other information --}}
-            <div class="col-md-9">
+            <div class="col-12 col-lg-9 mx-auto mt-3">
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="name" class="form-label">نام:</label>
                         <input id="name" name="name" type="text" class="form-control"
                             value="{{ old('name', $student->name) }}" />
@@ -59,7 +59,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="family" class="form-label">نام خانوادگی:</label>
                         <input id="family" name="family" type="text" class="form-control"
                             value="{{ old('family', $student->family) }}" />
@@ -69,7 +69,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="national_code" class="form-label">کدملی:</label>
                         <input id="national_code" name="national_code" placeholder="مثال: 0123456789" type="text"
                             class="form-control" value="{{ old('national_code', $student->national_code) }}" />
@@ -79,7 +79,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="student_code" class="form-label">کد دانش آموزی:</label>
                         <input id="student_code" name="student_code" type="text" class="form-control"
                             placeholder="مثال: 701" value="{{ old('student_code', $student->student_code) }}" />
@@ -89,7 +89,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="class_id" class="form-label">کلاس:</label>
                         <select id="class_id" class="form-select" name="class_id">
                             <option value="" selected>لطفا انتخاب کنید</option>
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="alert alert-info text-center col-9 mt-3">
+            <div class="alert alert-info text-center col-12 col-lg-9 mx-auto mt-4" role="alert">
                 اطلاعات ارتباطی
             </div>
 
@@ -116,10 +116,10 @@
                 $phones = old('phones', $phones ?? []);
             @endphp
 
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-lg-9 mx-auto">
                 {{-- Add first phone button --}}
                 <div id="add-first-phone-wrapper" class="{{ count($phones) ? 'd-none' : '' }}">
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="add-first-phone">
+                    <button type="button" id="add-first-phone" class="btn btn-outline-success w-100 w-md-auto mb-3">
                         + افزودن شماره
                     </button>
                 </div>
@@ -130,7 +130,7 @@
                         <div class="card mb-3 phone-item">
                             <div class="card-body">
                                 <div class="row g-3 align-items-end">
-                                    <div class="col-md-3">
+                                    <div class="col-12 col-md-3">
                                         <label class="form-label">تلفن برای:</label>
                                         <select name="phones[{{ $i }}][phone_for]"
                                             class="form-select phone-for @error("phones.$i.phone_for") is-invalid @enderror">
@@ -146,8 +146,7 @@
                                         @enderror
                                     </div>
 
-                                    {{-- شماره تماس --}}
-                                    <div class="col-md-3">
+                                    <div class="col-12 col-md-3">
                                         <label class="form-label">شماره تماس:</label>
                                         <input type="text" name="phones[{{ $i }}][phone_num]"
                                             value="{{ $phone['phone_num'] ?? '' }}"
@@ -158,8 +157,7 @@
                                         @enderror
                                     </div>
 
-                                    {{-- فقط مجازی --}}
-                                    <div class="col-md-3">
+                                    <div class="col-12 col-md-3">
                                         <div class="form-check mt-4">
                                             <input type="checkbox" name="phones[{{ $i }}][is_just_virtual]"
                                                 value="1" class="form-check-input"
@@ -168,14 +166,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3 text-end">
-                                        <button type="button" class="btn btn-sm btn-danger remove-phone">
+                                    <div class="col-12 col-md-3 text-center text-md-end">
+                                        <button type="button" class="btn btn-sm btn-danger remove-phone w-100 w-md-auto">
                                             حذف
                                         </button>
                                     </div>
                                 </div>
 
-                                {{-- توضیحات --}}
                                 <div class="mt-3">
                                     <label class="form-label">توضیحات:</label>
                                     <textarea name="phones[{{ $i }}][description]" rows="1"
@@ -191,8 +188,8 @@
                 </div>
 
                 @if (count($phones))
-                    <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-phone">
-                        + افزودن شماره
+                    <button type="button" id="add-phone" class="btn btn-outline-success w-100 w-md-auto mb-3">
+                        + افزودن شماره جدید
                     </button>
                 @endif
             </div>
@@ -200,13 +197,13 @@
 
 
 
-            <div class="alert alert-info text-center col-9 mt-3" role="alert">
+            <div class="alert alert-info text-center col-12 col-lg-9 mx-auto mt-4" role="alert">
                 اطلاعات تکمیلی
             </div>
 
-            <div class="col-md-9">
+            <div class="col-12 col-lg-9 mx-auto">
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="father_name" class="form-label">نام پدر:</label>
                         <input id="father_name" name="father_name" type="text" class="form-control"
                             value="{{ old('father_name', $profile->father_name ?? '') }}" />
@@ -216,7 +213,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="previous_school" class="form-label">نام مدرسه قبلی:</label>
                         <input id="previous_school" name="previous_school" type="text" class="form-control"
                             value="{{ old('previous_school', $profile->previous_school ?? '') }}" />
@@ -226,7 +223,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label for="date_of_birth" class="form-label">تاریخ تولد:</label>
                         <input id="date_of_birth" name="date_of_birth" placeholder="مثال: 1400/01/01" type="text"
                             class="form-control"
@@ -240,7 +237,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="col-12 col-lg-9 mx-auto">
                 <button type="submit" class="btn btn-outline-dark mt-3 mb-5">
                     ویرایش
                 </button>
@@ -250,7 +247,7 @@
     </div>
 @endsection
 
-@section('script')
+@push('scripts')
     <script>
         let cropper;
 
@@ -343,7 +340,7 @@
         <div class="card mb-3 phone-item">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label">تلفن برای</label>
                         <select name="phones[${index}][phone_for]" class="form-select phone-for">
                             <option value="">انتخاب کنید</option>
@@ -355,13 +352,13 @@
                         <div class="invalid-feedback">الزامی</div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <label class="form-label">شماره تماس</label>
                         <input type="text" name="phones[${index}][phone_num]" class="form-control phone-num">
                         <div class="invalid-feedback">شماره معتبر وارد کنید</div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-12 col-md-3">
                         <div class="form-check mt-4">
                             <input type="checkbox" name="phones[${index}][is_just_virtual]" value="1"
                                    class="form-check-input">
@@ -369,7 +366,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3 text-end">
+                    <div class="col-12 col-md-3 text-center text-md-end">
                         <button type="button" class="btn btn-sm btn-danger remove-phone">حذف</button>
                     </div>
                 </div>
@@ -417,4 +414,4 @@
             });
         });
     </script>
-@endsection
+@endpush

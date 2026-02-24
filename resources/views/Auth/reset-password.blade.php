@@ -15,41 +15,45 @@
 </head>
 
 <body>
-    <div class="row mt-5 justify-content-center align-items-center">
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <h5 class="card-header">تغییر رمز عبور</h5>
-                <div class="card-body">
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-                    @if (session()->has('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-                    <form action="{{ route('resetPasswordPost') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="token" value="{{ $token }}">
+    <div class="container">
+        <div class="row min-vh-100 justify-content-center align-items-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm">
+                    <h5 class="card-header text-center">تغییر رمز عبور</h5>
+                    <div class="card-body">
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+                        @if (session()->has('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
 
-                        <div class="mb-3">
-                            <label class="form-label">کلمه عبور جدید:</label>
-                            <input autocomplete="off" type="password" name="password" class="form-control">
-                            <div class="form-text text-danger">
-                                @error('password')
-                                    {{ $message }}
-                                @enderror
+                        <form action="{{ route('resetPasswordPost') }}" method="POST" autocomplete="off">
+                            @csrf
+                            <input type="hidden" name="token" value="{{ $token }}">
+
+                            <div class="mb-3">
+                                <label class="form-label">کلمه عبور جدید:</label>
+                                <input autocomplete="off" type="password" name="password" class="form-control">
+                                <div class="form-text text-danger">
+                                    @error('password')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">تکرار کلمه عبور:</label>
-                            <input autocomplete="off" type="password" name="password_confirmation" class="form-control">
-                            <div class="form-text text-danger">
-                                @error('password_confirmation')
-                                    {{ $message }}
-                                @enderror
+                            <div class="mb-3">
+                                <label class="form-label">تکرار کلمه عبور:</label>
+                                <input autocomplete="off" type="password" name="password_confirmation"
+                                    class="form-control">
+                                <div class="form-text text-danger">
+                                    @error('password_confirmation')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="btn btn-secondary">تغییر کلمه عبور</button>
-                    </form>
+                            <button type="submit" class="btn btn-secondary w-100">تغییر کلمه عبور</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

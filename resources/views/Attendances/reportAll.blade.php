@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>گزارش حضور غیاب</title>
 
@@ -40,9 +39,11 @@
         <a href="{{ route('dashboard') }}" class="btn btn-outline-primary me-2">بازگشت به داشبورد</a>
         <a href="{{ route('attendances.index') }}" class="btn btn-outline-primary">بازگشت به صفحه اصلی حضورغیاب</a>
     </div>
-    <div>
-        <table id="reportTable" class="display nowrap" style="width: 100%">
-            <thead>
+    <div class="table-responsive">
+        {{-- <table id="reportTable" class="display nowrap" style="width: 100%"> --}}
+        <table id="reportTable" class="table table-striped table-bordered nowrap align-middle text-center w-100">
+
+            <thead class="table-light">
                 <th scope="col">نام خانوادگی</th>
                 <th scope="col">نام</th>
                 <th scope="col">کلاس</th>

@@ -1,9 +1,9 @@
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('title', 'Attendance registration')
 
-@section('body')
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+@section('content')
+    <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h4 class="fw-bold">حضور غیاب - {{ toJalali($day) }}</h4>
         <div>
             <a href="{{ route('attendances.registration.ByNationalCode', $day) }}" class="btn btn-outline-secondary">حضور غیاب
@@ -60,16 +60,14 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
-@section('link')
+@push('links')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-@endsection
+@endpush
 
 
-@section('script')
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -352,4 +350,4 @@
             location.reload();
         }, 30000);
     </script>
-@endsection
+@endpush

@@ -1,9 +1,10 @@
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('title', 'Attendance Days')
 
-@section('body')
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+@section('content')
+    <div
+        class="d-flex justify-content-between flex-column flex-lg-row gap-2 align-items-start align-items-md-center pt-3 pb-2 mb-3 border-bottom">
         <h4 class="fw-bold">روز های درسی</h4>
         <div>
             <a data-confirm="create" data-confirm-item="تاریخ {{ toJalali($today) }}"
@@ -19,7 +20,7 @@
 
 
     <div class="table-responsive">
-        <table class="table text-center align-middle">
+        <table class="table text-center table-striped align-middle">
             <thead>
                 <tr>
                     <th>ردیف</th>
@@ -36,14 +37,19 @@
                 @foreach ($report as $r)
                     <tr>
                         <td>{{ $loop->count - $loop->index }}</td>
-                        <th>{{ toJalali($r->date) }}</th>
-                        <th {{ $r->unknown == 0 ? '' : 'class=bg-danger' }}>{{ $r->unknown }}</th>
-                        <th>{{ $r->present + $r->late }}</th>
-                        <th>{{ $r->late }}</th>
-                        <th>{{ $r->present }}</th>
-                        <th>{{ $r->absent }}</th>
+                        <td>{{ toJalali($r->date) }}</td>
+                        @if ($r->unknown != 0)
+                            <th class="bg-danger">{{ $r->unknown }}</th>
+                        @else
+                            <td>{{ $r->unknown }}</td>
+                        @endif
+                        <td>{{ $r->present + $r->late }}</td>
+                        <td>{{ $r->late }}</td>
+                        <td>{{ $r->present }}</td>
+                        <td>{{ $r->absent }}</td>
                         <td>
-                            <div class="d-flex justify-content-center">
+                            {{-- <div class="d-flex justify-content-center"> --}}
+                            <div class="d-flex flex-column flex-md-row gap-1 justify-content-center">
                                 @if ($r->unknown != 0)
                                     <div class="btn-group position-static">
                                         <button type="button" class="btn btn-sm btn-outline-info me-2 dropdown-toggle"
@@ -86,7 +92,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="unknownStudents" tabindex="-1" aria-labelledby="unknownStudentsLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="unknownStudents" tabindex="-1" aria-labelledby="unknownStudentsLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" id="unknownStudentsContent">
                 <div class="modal-header">
@@ -95,7 +101,7 @@
                 </div>
                 <div class="modal-body" id="unknownStudentsBody">
                     {{-- joining modal content by java script --}}
-                </div>
+    {{-- </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
@@ -103,10 +109,35 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+    <div class="modal fade" id="unknownStudents" tabindex="-1" aria-labelledby="unknownStudentsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down modal-xl">
+            <div class="modal-content" id="unknownStudentsContent">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unknownStudentsLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-2" id="unknownStudentsBody">
+                    {{-- content injected by JS --}}
+                </div>
+
+                <div class="modal-footer flex-column flex-sm-row gap-2">
+                    <button type="button" class="btn btn-secondary w-100 w-sm-auto" data-bs-dismiss="modal">
+                        بستن
+                    </button>
+                    <a href="#" id="btnMarkAllAbsent" class="btn btn-danger w-100 w-sm-auto">
+                        ثبت غیبت غیرموجه برای همه
+                    </a>
+                </div>
+
+            </div>
+        </div>
     </div>
 @endsection
 
-@section('script')
+@push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modalBody = document.getElementById('unknownStudentsBody');
@@ -143,14 +174,13 @@
                                     `<div class="text-center text-muted py-3">هیچ دانش‌آموزی یافت نشد.</div>`;
                             } else {
                                 html = `
-
-              <table class="table text-center align-middle">
+    <div class="table-responsive">
+              <table class="table text-center table-striped align-middle">
                         <thead>
                             <tr>
                                 <th>نام خانوادگی</th>
                                 <th>نام</th>
                                 <th>کلاس</th>
-                                <th>کدملی</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -162,22 +192,21 @@
                         .replace(':id', s.student.id);
 
             return `
-                                            <tr>
-                                                <td>${s.student.family}</td>
-                                                <td>${s.student.name}</td>
-                                                <td>${s.student?.school_class?.name ?? '-'}</td>
-                                                <td>${s.student.national_code}</td>
-                                                <td>
-                                                <div class="d-flex justify-content-center">
-                                                <a href="${url}" class="btn btn-sm btn-outline-info me-2">
-                                                ثبت وضعیت
-                                                </a>
-                                                </div>
-                                                </td>
-                                                </tr>`;
+                                                                                        <tr>
+                                                                                        <td>${s.student.family}</td>
+                                                                                        <td>${s.student.name}</td>
+                                                                                        <td>${s.student?.school_class?.name ?? '-'}</td>
+                                                                                        <td>
+                                                                                        <div class="d-flex justify-content-center">
+                                                                                        <a href="${url}" class="btn btn-sm btn-outline-info me-2">
+                                                                                        ثبت وضعیت
+                                                                                        </a>
+                                                                                        </div>
+                                                                                        </td>
+                                                                                        </tr>`;
         }).join('')}
     </tbody>
-              </table>
+              </table> </div>
               `;
                             }
                             modalBody.innerHTML = html;
@@ -203,4 +232,4 @@
             }
         });
     </script>
-@endsection
+@endpush
